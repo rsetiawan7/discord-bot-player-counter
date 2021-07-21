@@ -1,3 +1,7 @@
+# Preview
+
+![Preview](img/preview.png)
+
 # Instruction
 
 1. Run `npm install`
