@@ -98,6 +98,7 @@ export const init = (client?: Discord.Client): void => {
   }
 
   const updatePresence = (numberOfPlayers: number, maxPlayers: number): void => {
+    printLog('start update presence');
     currentClient.user?.setActivity({
       type: 'PLAYING',
       name: `with ${numberOfPlayers} ${numberOfPlayers < 2 ? 'player' : 'players'}! | Slot: ${maxPlayers} players`,
@@ -111,6 +112,7 @@ export const init = (client?: Discord.Client): void => {
   };
 
   const updateChannelName = (numberOfPlayers: number, maxPlayers: number): void => {
+    printLog('start update channel name');
     currentClient.guilds.fetch(
       String(RAGEMP_UPDATE_GUILD_ID)
     ).then((guild: Discord.Guild) => {
@@ -137,10 +139,12 @@ export const init = (client?: Discord.Client): void => {
   const updateStats = (numberOfPlayers: number, maxPlayers: number): void => {
     switch (RAGEMP_UPDATE_TYPE) {
       case 'channel': {
+        printLog('update stats by channel');
         updateChannelName(numberOfPlayers, maxPlayers);
         break;
       }
       case 'presence': {
+        printLog('update stats by presence');
         updatePresence(numberOfPlayers, maxPlayers);
         break;
       }
@@ -159,16 +163,19 @@ export const init = (client?: Discord.Client): void => {
       printLog(`Server not found. Config: ${serverString}`);
       setTimeout(() => lookupServer(), APP_LOOKUP_INTERVAL as number);
     } else {
+      printLog('finish filter server');
       updateStats(server.players, server.maxplayers);
     }
   };
 
   const lookupServer = (): void => {
+    printLog('start to lookup server');
     fetch('https://cdn.rage.mp/master/', {
       timeout: Number(RAGEMP_LOOKUP_TIMEOUT),
       method: 'GET',
     }).then((response) => response.json())
       .then((servers: RAGEMPServerList) => {
+        printLog('finish lookup server');
         filterServers(servers);
       })
       .catch((e) => {

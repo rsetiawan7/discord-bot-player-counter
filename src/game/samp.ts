@@ -131,6 +131,7 @@ export const init = (client?: Discord.Client): void => {
   };
 
   const updateChannelName = (numberOfPlayers: number, maxPlayers: number): void => {
+    printLog('start to update channel name');
     currentClient.guilds.fetch(
       String(SAMP_UPDATE_GUILD_ID)
     ).then((guild: Discord.Guild) => {
@@ -159,10 +160,12 @@ export const init = (client?: Discord.Client): void => {
   const updateStats = (numberOfPlayers: number, maxPlayers: number): void => {
     switch (SAMP_UPDATE_TYPE) {
       case 'channel': {
+        printLog('update stats by channel');
         updateChannelName(numberOfPlayers, maxPlayers);
         break;
       }
       case 'presence': {
+        printLog('update stats by presence');
         updatePresence(numberOfPlayers, maxPlayers);
         break;
       }
@@ -174,6 +177,7 @@ export const init = (client?: Discord.Client): void => {
   }
 
   const lookupServer = (): void => {
+    printLog('start lookup');
     samp({
       host: SAMP_ADDRESS,
       port: SAMP_PORT,
@@ -183,6 +187,7 @@ export const init = (client?: Discord.Client): void => {
         printLog(`Error while lookup: ${err}`)
         setTimeout(() => lookupServer(), APP_LOOKUP_INTERVAL as number);
       } else {
+        printLog('finish lookup');
         updateStats(response.online, response.maxplayers);
       }
     });
