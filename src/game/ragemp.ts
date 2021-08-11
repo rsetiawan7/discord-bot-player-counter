@@ -68,7 +68,7 @@ export const init = (client?: Discord.Client): void => {
     hasError = true;
   }
 
-  if (!RAGEMP_DISCORD_BOT_TOKEN) {
+  if (!client && !RAGEMP_DISCORD_BOT_TOKEN) {
     // tslint:disable-next-line: no-console
     console.error('RAGEMP_DISCORD_BOT_TOKEN doesn\'t have value!');
     hasError = true;
