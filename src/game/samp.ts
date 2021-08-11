@@ -188,15 +188,17 @@ export const init = (client?: Discord.Client): void => {
     });
   }
 
-  if (client) {
-    currentClient = client;
-    lookupServer();
-  } else {
-    currentClient.login(SAMP_DISCORD_BOT_TOKEN).then(async () => {
-      printLog('Logged in.');
+  setTimeout(() => {
+    if (client) {
+      currentClient = client;
       lookupServer();
-    }).catch((reason: any) => {
-      printLog(`Failed to login -> ${reason}`);
-    });
-  }
+    } else {
+      currentClient.login(SAMP_DISCORD_BOT_TOKEN).then(async () => {
+        printLog('Logged in.');
+        lookupServer();
+      }).catch((reason: any) => {
+        printLog(`Failed to login -> ${reason}`);
+      });
+    }
+  }, 2000);
 };

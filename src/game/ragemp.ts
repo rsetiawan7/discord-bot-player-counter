@@ -90,7 +90,7 @@ export const init = (client?: Discord.Client): void => {
       now.getFullYear(),
       now.getHours(),
       now.getMinutes(),
-      now.getSeconds().toString,
+      now.getSeconds(),
     ];
 
     // tslint:disable-next-line: no-console
@@ -177,15 +177,17 @@ export const init = (client?: Discord.Client): void => {
       });
   }
 
-  if (client) {
-    currentClient = client;
-    lookupServer();
-  } else {
-    currentClient.login(RAGEMP_DISCORD_BOT_TOKEN).then(async () => {
-      printLog('Logged in.');
+  setTimeout(() => {
+    if (client) {
+      currentClient = client;
       lookupServer();
-    }).catch((reason: any) => {
-      printLog(`Failed to login -> ${reason}`);
-    });
-  }
+    } else {
+      currentClient.login(RAGEMP_DISCORD_BOT_TOKEN).then(async () => {
+        printLog('Logged in.');
+        lookupServer();
+      }).catch((reason: any) => {
+        printLog(`Failed to login -> ${reason}`);
+      });
+    }
+  }, 2000);
 };
